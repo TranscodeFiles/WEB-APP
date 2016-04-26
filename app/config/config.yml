@@ -3,15 +3,16 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@FileBundle/Resources/config/services.yml" }
+    - { resource: "@AppBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale: en
+    locale: fr
 
 framework:
     #esi:             ~
-    #translator:      { fallbacks: ["%locale%"] }
+    translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -111,3 +112,16 @@ assetic:
         jquery:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
+
+hwi_oauth:
+    connect:
+        account_connector: app.user_provider
+    firewall_name: main
+    resource_owners:
+        facebook:
+            type:                facebook
+            client_id:           "%oauth.facebook.id%"
+            client_secret:       "%oauth.facebook.secret%"
+            scope:               "email"
+            options:
+                display: popup #dialog is optimized for popup window

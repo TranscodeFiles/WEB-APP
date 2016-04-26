@@ -1,3 +1,16 @@
 {% extends "AppBundle::base.html.twig" %}
 
-{% block title %}{% endblock %}
+{% block title_page %}
+    {{ "app.homepage.title"|trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="jumbotron">
+                <h2>{{ "app.title"|trans }}</h2>
+                <p>{{ "app.homepage.description"|trans }}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

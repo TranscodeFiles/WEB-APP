@@ -1,0 +1,7 @@
+parameters:
+    app.user_provider.class: AppBundle\Services\UserProvider
+
+services:
+    app.user_provider:
+        class: "%app.user_provider.class%"
+        arguments: ["@fos_user.user_manager", {'facebook': "%oauth.facebook.id%"}]
