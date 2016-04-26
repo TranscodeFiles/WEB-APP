@@ -34,17 +34,23 @@
             </div>
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li>
-                        {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+                    <li class="active"><a href="/">Home</a></li>
+                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                        <li>
+                            <a href="{{ path('fos_user_profile_show') }}">
+                                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ path('fos_user_security_logout') }}">
                                 {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
                             </a>
-                        {% else %}
-                            <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
-                        {% endif %}
-                    </li>
+                        </li>
+                    {% else %}
+                        <li>
+                                <a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </div><!--/.nav-collapse -->
         </div>

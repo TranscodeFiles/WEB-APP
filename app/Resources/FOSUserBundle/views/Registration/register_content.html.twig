@@ -6,8 +6,8 @@
     <div id="signupbox" style="margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
             <div class="panel-heading">
-                <div class="panel-title">Sign Up</div>
-                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="{{ path('fos_user_security_login') }}">Sign In</a></div>
+                <div class="panel-title">{{ 'layout.register'|trans }}</div>
+                <div style="float:right; font-size: 85%; position: relative; top:-10px"><a id="signinlink" href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans }}</a></div>
             </div>
             <div class="panel-body" >
                 <form id="signupform" class="form-horizontal" action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="post" role="form">
