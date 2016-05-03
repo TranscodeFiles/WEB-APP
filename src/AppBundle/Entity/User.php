@@ -28,6 +28,24 @@ class User extends BaseUser
     private $facebookAccessToken;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="googleId", type="string", length=255, nullable=true)
+     */
+    protected $googleId;
+
+    private $googleAccessToken;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="twitterId", type="string", length=255, nullable=true)
+     */
+    protected $twitterId;
+
+    private $twitterIdAccessToken;
+
+    /**
      * Set facebookId
      *
      * @param string $facebookId
@@ -67,5 +85,83 @@ class User extends BaseUser
     public function getFacebookAccessToken()
     {
         return $this->facebookAccessToken;
+    }
+
+    /**
+     * Set googleId
+     *
+     * @param string $googleId
+     * @return User
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleId = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * Get googleId
+     *
+     * @return string 
+     */
+    public function getGoogleId()
+    {
+        return $this->googleId;
+    }
+
+    /**
+     * Set twitterId
+     *
+     * @param string $twitterId
+     * @return User
+     */
+    public function setTwitterId($twitterId)
+    {
+        $this->twitterId = $twitterId;
+
+        return $this;
+    }
+
+    /**
+     * Get twitterId
+     *
+     * @return string 
+     */
+    public function getTwitterId()
+    {
+        return $this->twitterId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGoogleAccessToken()
+    {
+        return $this->googleAccessToken;
+    }
+
+    /**
+     * @param mixed $googleAccessToken
+     */
+    public function setGoogleAccessToken($googleAccessToken)
+    {
+        $this->googleAccessToken = $googleAccessToken;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTwitterIdAccessToken()
+    {
+        return $this->twitterIdAccessToken;
+    }
+
+    /**
+     * @param mixed $twitterIdAccessToken
+     */
+    public function setTwitterIdAccessToken($twitterIdAccessToken)
+    {
+        $this->twitterIdAccessToken = $twitterIdAccessToken;
     }
 }
