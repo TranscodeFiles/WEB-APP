@@ -125,3 +125,14 @@ hwi_oauth:
             scope:               "email"
             options:
                 display: popup #dialog is optimized for popup window
+        google:
+            type:                google
+            client_id:           "%oauth.google.id%"
+            client_secret:       "%oauth.google.secret%"
+            scope:               "email profile"
+        twitter:
+            type:                twitter
+            client_id:           "%oauth.twitter.id%"
+            client_secret:       "%oauth.twitter.secret%"
+            options:
+                include_email: true
