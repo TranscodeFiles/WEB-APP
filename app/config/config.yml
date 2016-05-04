@@ -9,6 +9,12 @@ imports:
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: fr
+    oauth.facebook.id: 1733506483528117
+    oauth.facebook.secret: a16da078a64f9391e921474823b04483
+    oauth.google.id: 512528824517-1vav434osjl15n0e6ioi4sfijh20svhi.apps.googleusercontent.com
+    oauth.google.secret: VzKZ2jBmsFKs4b7bxHFop7Ro
+    oauth.twitter.id: 4X9f1Dj78DcqVvM6NL08GrW6m
+    oauth.twitter.secret: mt1PA0F5td0pKOFvnt6ufJ9FvYaZbCT28yvTnDJSfpBck3gBAT
 
 framework:
     #esi:             ~
