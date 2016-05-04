@@ -1,0 +1,18 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: mariadb
+    database_port: null
+    database_name: app_transcode
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 2619bb19320ac361413a251d6714efc8f7959e04
+    oauth.facebook.id: 1733506483528117
+    oauth.facebook.secret: a16da078a64f9391e921474823b04483
+    oauth.google.id: 512528824517-1vav434osjl15n0e6ioi4sfijh20svhi.apps.googleusercontent.com
+    oauth.google.secret: VzKZ2jBmsFKs4b7bxHFop7Ro
+    oauth.twitter.id: 4X9f1Dj78DcqVvM6NL08GrW6m
+    oauth.twitter.secret: mt1PA0F5td0pKOFvnt6ufJ9FvYaZbCT28yvTnDJSfpBck3gBAT
