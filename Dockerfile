@@ -19,7 +19,6 @@ RUN apt-get update && \
         libicu-dev && \
     ln -s /usr/bin/nodejs /usr/local/bin/node && \
     ln -s /usr/bin/npm /usr/local/bin/npm && \
-    npm install && \
     npm install -g bower gulp && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install pdo_mysql intl && \

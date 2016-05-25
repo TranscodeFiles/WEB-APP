@@ -8,6 +8,7 @@ groupmod -g `stat -c %g /var/www/html` www-data || true
 
 if [ "$1" = "composer" ]; then
     composer install
+    npm install
     bower install --allow-root
     gulp sass
     php app/console a:i --symlink
