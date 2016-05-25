@@ -5,12 +5,49 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row">
-            <div class="jumbotron">
-                <h2>{{ "app.title"|trans }}</h2>
+    <div class="jumbotron">
+        <div class="container-fluid">
+            <div class="text__presentation col-md-push-8 col-md-3 col-xs-12 ">
+                <p>{{ "app.title"|trans }}</p>
                 <p>{{ "app.homepage.description"|trans }}</p>
+                <p><a class="btn btn-primary btn-lg" href="#" role="button">Commencez maintenant</a></p>
             </div>
+
         </div>
     </div>
+    <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    <a href="{{ path('fos_user_security_login') }}">
+                    <img src="{{ asset("img/Connexion.png") }}" class="img-responsive col-md-4 col-md-push-0 col-xs-6 col-xs-push-3" alt="">
+                    <h2 class="col-md-8 col-xs-12 text-uppercase text-center">connecter</h2>
+                    </a>
+                </div>
+               
+
+
+            </div>
+            <div class="col-md-4 col-md-push-4">
+                <div class="row">
+                    <a href="{{ path("fos_user_registration_register") }}">
+                    <img src="{{ asset("img/inscription.png") }}" class="img-responsive col-md-4 col-md-push-0 col-xs-6 col-xs-push-3" alt="">
+                    <h2 class="col-md-8 col-xs-12 text-center text-uppercase">S'inscrire</h2>
+                    </a>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <footer>
+            <p>&copy; Company 2015</p>
+        </footer>
+    </div> <!-- /container -->
+
 {% endblock %}
