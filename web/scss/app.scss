@@ -1,0 +1,7 @@
+//Ce fichier permet juste d'appeler nos dépendances sass complète
+
+@import "variables";
+//import bootstrap sass
+@import "../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
+@import "styles";
+
