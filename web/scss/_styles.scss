@@ -3,6 +3,10 @@
 
 }
 
+body{
+	margin-top: $navbar-height;
+}
+
 nav , .navbar-brand{
 	text-transform: uppercase;
 

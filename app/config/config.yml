@@ -119,6 +119,7 @@ assetic:
             inputs:
                 - '%kernel.root_dir%/../vendor/components/jquery/jquery.js'
 
+
 hwi_oauth:
     connect:
         account_connector: app.user_provider
