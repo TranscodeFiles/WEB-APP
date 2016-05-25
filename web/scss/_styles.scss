@@ -1,0 +1,50 @@
+.navbar-inverse .navbar-nav>li>a:hover{
+	background-color: $navbar-inverse-link-color;
+
+}
+
+nav , .navbar-brand{
+	text-transform: uppercase;
+
+}
+
+.jumbotron{
+	background: url(../img/image_page_index.png);
+	background-position: center;
+	color: white;
+	min-height: $height-jumbotron;
+}
+
+
+.top-buffer{
+	margin-top: 20px;
+}
+
+form{
+
+	button{
+		width: 100%;
+	}
+}
+
+.navbar-img{
+	max-height: $navbar-height;
+}
+
+.progress{
+	.complete{
+		background-color: red;
+	}
+
+	a{
+		position: absolute;
+		right: 25px;
+		color: white;
+		text-decoration: underline; 
+
+		&.loading{
+			color: black;
+			cursor: default;
+		}
+	}
+}

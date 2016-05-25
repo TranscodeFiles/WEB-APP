@@ -9,12 +9,18 @@ COPY . /var/www/html
 COPY config/php.ini /usr/local/etc/php/
 
 RUN apt-get update && \
+    curl -sL https://deb.nodesource.com/setup_4.x | bash && \
     apt-get install -y \
         curl \
         git \
         unzip \
         zip \
+        nodejs \
         libicu-dev && \
+    ln -s /usr/bin/nodejs /usr/local/bin/node && \
+    ln -s /usr/bin/npm /usr/local/bin/npm && \
+    npm install && \
+    npm install -g bower gulp && \
     rm -rf /var/lib/apt/lists/* && \
     docker-php-ext-install pdo_mysql intl && \
     curl -o /usr/local/bin/composer https://getcomposer.org/composer.phar && \
