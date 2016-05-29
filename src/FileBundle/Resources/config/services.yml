@@ -1,4 +1,11 @@
+parameters:
+    file.files.class: FileBundle\Services\Files
+    file.controller.file.class: FileBundle\Controller\FilesController
+
 services:
-#    file.example:
-#        class: FileBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+    file.files:
+        class: "%file.files.class%"
+        arguments: ["@ceph.manager"]
+    file.controller.file:
+        class: "%file.controller.file.class%"
+        arguments: ["@file.files"]

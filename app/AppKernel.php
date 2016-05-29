@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new FileBundle\FileBundle(),
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
+            new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
+            new Common\CephBundle\CephBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
