@@ -6,7 +6,7 @@ set -e
 usermod -u `stat -c %u /var/www/html` www-data || true
 groupmod -g `stat -c %g /var/www/html` www-data || true
 
-if [ "$1" = "composer" ]; then
+if [ "$1" = "init" ]; then
     composer install
     npm install
     bower install --allow-root
@@ -18,6 +18,8 @@ if [ "$1" = "composer" ]; then
     rm -rf /var/www/html/app/cache/* /var/www/html/app/logs/*
     chmod -R 775 /var/www/html
     chown -R www-data:www-data /var/www
+elif [ "$1" = "database" ]; then
+    php app/console d:d:c
 else
     /usr/sbin/apache2 -D FOREGROUND
 fi

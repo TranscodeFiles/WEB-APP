@@ -1,0 +1,30 @@
+parameters:
+    ceph.manager.class: Common\CephBundle\Services\Manager
+    ceph.container.class: Common\CephBundle\Services\Container
+    ceph.object.class: Common\CephBundle\Services\Object
+    ceph.request.class: Common\CephBundle\Services\Request
+
+services:
+    ceph.manager:
+        class: "%ceph.manager.class%"
+        arguments: ["%ceph.swift%"]
+        calls:
+            - [setContainerService, ["@ceph.container"]]
+            - [setRequestService, ['@ceph.request']]
+    ceph.container:
+        class: "%ceph.container.class%"
+        arguments: ["@ceph.request"]
+        calls:
+            - [setManagerService, ['@ceph.manager']]
+            - [setObjectService, ['@ceph.object']]
+    ceph.object:
+        class: "%ceph.object.class%"
+        arguments: ["@ceph.request"]
+        calls:
+            - [setContainerService, ["@ceph.container"]]
+            - [setManagerService, ['@ceph.manager']]
+    ceph.request:
+        class: "%ceph.request.class%"
+        arguments: ["@buzz"]
+        calls:
+            - [setManagerService, ['@ceph.manager']]
