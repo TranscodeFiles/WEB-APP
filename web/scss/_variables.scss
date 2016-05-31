@@ -4,6 +4,12 @@ $bootstrap-sass-asset-helper: false !default;
 // --------------------------------------------------
 $grey-site: #bebab8;
 
+//Include fonts
+@font-face {
+  font-family: NewCicleFina;
+  src: url(../fonts/New_Cicle_Fina.ttf);
+}
+
 //== Colors
 //
 //## Gray and brand colors for use across Bootstrap.
@@ -43,8 +49,9 @@ $link-hover-decoration: underline !default;
 //
 //## Font, line-height, and color for body text, headings, and more.
 
-$font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif !default;
-$font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
+$font-family-sans-serif:  NewCicleFina , sans-serif !default;
+$font-family-serif:       NewCicleFina !default;
+
 //** Default monospace fonts for `<code>`, `<kbd>`, and `<pre>`.
 $font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace !default;
 $font-family-base:        $font-family-sans-serif !default;
