@@ -1,0 +1,42 @@
+<h1>Transcoded files list</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Content type</th>
+        <th>Content length</th>
+        <th>Status</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for file in transcodedFiles %}
+        <tr>
+            <td>{{ file.id }}</a></td>
+            <td>{{ file.name }}</td>
+            <td>{{ file.contentType }}</td>
+            <td>{{ file.contentLength }}</td>
+            <td>{{ file.status }}</td>
+            {% if file.status == "OK" %}
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('converted_file_download', { 'id': file.id }) }}">Download</a>
+                        </li>
+                    </ul>
+                </td>
+            {% else %}
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('files_retry_transcode', { 'id': file.id }) }}">Retry</a>
+                        </li>
+                    </ul>
+                </td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

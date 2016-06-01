@@ -1,3 +1,44 @@
-file_homepage:
-    path:     /
-    defaults: { _controller: FileBundle:Default:index }
+files_index:
+    path:     /files/
+    defaults: { _controller: "FileBundle:File:index" }
+    methods:  GET
+
+files_show:
+    path:     /files/{id}/show
+    defaults: { _controller: "FileBundle:File:show" }
+    methods:  GET
+
+files_new:
+    path:     /files/new
+    defaults: { _controller: "FileBundle:File:new" }
+    methods:  [GET, POST]
+
+files_download:
+    path:     /files/{id}/download
+    defaults: { _controller: "FileBundle:File:download" }
+    methods:  [GET]
+
+files_transcode:
+    path:     /files/{id}/transcode
+    defaults: { _controller: "FileBundle:File:transcode" }
+    methods:  [GET, POST]
+
+files_retry_transcode:
+    path:     /converted/files/{id}/transcode-retry
+    defaults: { _controller: "FileBundle:ConvertedFile:retryTranscode" }
+    methods:  [GET]
+
+converted_file_updatestate:
+    path:     /converted/files/{id}/updatestate
+    defaults: { _controller: "FileBundle:ConvertedFile:updateState" }
+    methods:  [POST]
+
+converted_file_download:
+    path:     /converted/files/{id}/download
+    defaults: { _controller: "FileBundle:ConvertedFile:download" }
+    methods:  [GET]
+
+files_delete:
+    path:     /files/{id}/delete
+    defaults: { _controller: "FileBundle:File:delete" }
+    methods:  DELETE

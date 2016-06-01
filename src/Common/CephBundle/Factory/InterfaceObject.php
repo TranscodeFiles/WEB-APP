@@ -35,13 +35,12 @@ interface InterfaceObject
      *
      * @param  string $fileName
      * @param  object $contents
-     * @param  string $contentType
      *
      * @return bool
      *
      * @throws \ErrorException
      */
-    public function putObject($fileName, $contents, $contentType);
+    public function putObject($fileName, $contents);
 
     /**
      * Delete object in container

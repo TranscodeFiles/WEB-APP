@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\User\UserInterface as FOSUserInterface;
 /**
  * Loading and ad-hoc creation of a user by an OAuth sign-in provider account.
  *
- * @author Fabian Kiss <fabian.kiss@ymc.ch>
  */
 class UserProvider extends BaseFOSUBProvider
 {
@@ -70,7 +69,7 @@ class UserProvider extends BaseFOSUBProvider
         if (null !== $email = $response->getEmail()) {
             $user->setEmail($email);
         } else {
-            $user->setEmail('fake@fake' . rand() . '.com');
+            $user->setEmail('fake@fake' . uniqid() . '.com');
         }
 
         if (null === $this->userManager->findUserByUsername($response->getNickname())) {
