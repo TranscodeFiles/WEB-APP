@@ -16,7 +16,7 @@ fos_user:
 
 file:
     resource: "@FileBundle/Resources/config/routing.yml"
-    prefix:   /files
+    prefix:   /
 
 app:
     resource: "@AppBundle/Resources/config/routing.yml"

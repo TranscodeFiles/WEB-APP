@@ -1,11 +1,14 @@
 parameters:
-    file.files.class: FileBundle\Services\Files
-    file.controller.file.class: FileBundle\Controller\FilesController
+    file.custome.files.class: FileBundle\Services\Files
+    file.controller.file.class: FileBundle\Controller\FileController
 
 services:
+
     file.files:
-        class: "%file.files.class%"
-        arguments: ["@ceph.manager"]
-    file.controller.file:
-        class: "%file.controller.file.class%"
-        arguments: ["@file.files"]
+        class: "%file.custome.files.class%"
+        arguments: ["@ceph.manager", "@security.token_storage", "@buzz" , "@router","%api_core.host%"]
+
+#    @ToDo Convert this controller to service controller
+#    file.controller.file:
+#        class: "%file.controller.file.class%"
+#        arguments: ["@file.files"]
