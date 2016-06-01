@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use FileBundle\Entity\File;
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -44,6 +46,20 @@ class User extends BaseUser
     protected $twitterId;
 
     private $twitterIdAccessToken;
+
+    /**
+     * @ORM\OneToMany(targetEntity="FileBundle\Entity\File", mappedBy="user")
+     */
+    public $files;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->files = new ArrayCollection();
+    }
 
     /**
      * Set facebookId
@@ -163,5 +179,39 @@ class User extends BaseUser
     public function setTwitterIdAccessToken($twitterIdAccessToken)
     {
         $this->twitterIdAccessToken = $twitterIdAccessToken;
+    }
+
+    /**
+     * Add file
+     *
+     * @param File $file
+     *
+     * @return User
+     */
+    public function addFile(File $file)
+    {
+        $this->files[] = $file;
+
+        return $this;
+    }
+
+    /**
+     * Remove file
+     *
+     * @param File $file
+     */
+    public function removeFile(File $file)
+    {
+        $this->files->removeElement($file);
+    }
+
+    /**
+     * Get files
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getFiles()
+    {
+        return $this->files;
     }
 }

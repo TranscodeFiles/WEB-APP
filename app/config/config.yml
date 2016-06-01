@@ -16,6 +16,7 @@ parameters:
     oauth.google.secret: VzKZ2jBmsFKs4b7bxHFop7Ro
     oauth.twitter.id: 4X9f1Dj78DcqVvM6NL08GrW6m
     oauth.twitter.secret: mt1PA0F5td0pKOFvnt6ufJ9FvYaZbCT28yvTnDJSfpBck3gBAT
+    api_core.host: "lb-core"
 
 framework:
     #esi:             ~

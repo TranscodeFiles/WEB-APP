@@ -102,7 +102,7 @@ class Object implements InterfaceObject
     /**
      * @inheritdoc
      */
-    public function putObject($fileName, $contents, $contentType)
+    public function putObject($fileName, $contents)
     {
         try {
             return $this->requestService->put(
