@@ -15,10 +15,10 @@ if [ "$1" = "init" ]; then
     php app/console a:d
     php app/console c:c
     rm -rf /var/www/html/app/cache/* /var/www/html/app/logs/*
+    php app/console d:d:c || :
+    php app/console d:s:u -f || :
     chmod -R 775 /var/www/html
     chown -R www-data:www-data /var/www/html
-    su - www-data -c "php /var/wwww/html/app/console d:d:c"
-    su - www-data -c "php /var/wwww/html/app/console d:s:u -f"
 else
     chmod -R 775 /var/www/html
     chown -R www-data:www-data /var/www/html
