@@ -1,10 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>File</h1>
+    <div class="container">
+        <div class="page-header">
+            <h1>File</h1>
+        </div>
+        <div class="row">
+            <div class="control-group">
+                <a href="{{ path('files_index') }}" class="btn btn-primary">Back to the list</a>
 
-    <table>
-        <tbody>
+                <a href="{{ path('files_download', { 'id': file.id }) }}" class="btn btn-primary">Download</a>
+
+                <a href="{{ path('files_transcode', { 'id': file.id }) }}" class="btn btn-primary">Transcode</a>
+
+                <div class="pull-right">
+                    {{ form_start(delete_form) }}
+                    <input type="submit" value="Delete"  class="btn btn-danger" >
+                    {{ form_end(delete_form) }}
+                </div>
+
+            </div>
+
+
+        </div>
+        <div class="col-xs-12" style="height:50px;"></div>
+
+
+
+
+        <table class="table">
+            <tbody>
             <tr>
                 <th>Name</th>
                 <td>{{ file.name }}</td>
@@ -15,31 +40,18 @@
             </tr>
             <tr>
                 <th>Content length</th>
-                <td>{{ file.contentLength }}</td>
+                <td>{{ file.contentLength|bytes }}</td>
             </tr>
             <tr>
                 <th>Status</th>
                 <td>{{ file.status }}</td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('files_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('files_download', { 'id': file.id }) }}">Download</a>
-        </li>
-        <li>
-            <a href="{{ path('files_transcode', { 'id': file.id }) }}">Transcode</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+
+    </div>
+
 
     {% include 'convertedFile/list.html.twig' with {'transcodedFiles': file.convertedFiles} %}
 

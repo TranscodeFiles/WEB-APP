@@ -40,8 +40,13 @@
                     <li><a href="/">Accueil</a></li>
                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                         <li>
+                            <a href="{{ path('files_index') }}">
+                                Mes fichiers
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ path('fos_user_profile_show') }}">
-                                {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
+                                {{ app.user.username }}
                             </a>
                         </li>
                         
@@ -61,17 +66,21 @@
         </div>
     </nav>
 
-
     {% block body %}{% endblock %}
 
 
 
 
-    {% block javascripts %}{% endblock %}
+
+    {
 
     {# @ToDo Remove it #}
     {% javascripts '@jquery' '@bootstrap_js' %}
         <script type="text/javascript" src="{{ asset_url }}"></script>
     {% endjavascripts %}
+
+    {% block javascript_footer %}
+
+    {% endblock %}
 </body>
 </html>

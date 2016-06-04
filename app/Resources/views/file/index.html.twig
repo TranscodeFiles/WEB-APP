@@ -1,42 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>File list</h1>
+    <div class="container">
+        <div class="page-header">
+            <h1>Mes fichiers :</h1>
+        </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Content type</th>
-                <th>Content length</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for file in files %}
-            <tr>
-                <td><a href="{{ path('files_show', { 'id': file.id }) }}">{{ file.id }}</a></td>
-                <td>{{ file.name }}</td>
-                <td>{{ file.contentType }}</td>
-                <td>{{ file.contentLength }}</td>
-                <td>{{ file.status }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('files_show', { 'id': file.id }) }}">show</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Content type</th>
+                    <th>Content length</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for file in files %}
+                    <tr>
+                        <td><a href="{{ path('files_show', { 'id': file.id }) }}">{{ file.id }}</a></td>
+                        <td>{{ file.name }}</td>
+                        <td>{{ file.contentType }}</td>
+                        <td>{{ file.contentLength|bytes }}</td>
+                        <td>{{ file.status }}</td>
+                        <td>
+                            <ul>
+                                <a href="{{ path('files_show', { 'id': file.id }) }}" class="btn btn-primary">show</a>
+                            </ul>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('files_new') }}">Create a new entry</a>
-        </li>
-    </ul>
+        <hr>
+        <ul>
+            <a href="{{ path('files_new') }}" class="btn btn-primary pull-right">Upload a new file</a></li>
+        </ul>
+    </div>
+
+
+
 {% endblock %}
