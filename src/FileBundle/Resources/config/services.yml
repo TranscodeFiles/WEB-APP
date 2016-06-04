@@ -12,3 +12,8 @@ services:
 #    file.controller.file:
 #        class: "%file.controller.file.class%"
 #        arguments: ["@file.files"]
+    file.twig_extension:
+            class: FileBundle\Twig\Extension\ByteFilter
+            public: false
+            tags:
+                - { name: twig.extension }

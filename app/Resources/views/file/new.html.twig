@@ -1,16 +1,28 @@
 {% extends '::base.html.twig' %}
 
+{% form_theme form ":file/forms:form_theme_file_upload.html.twig" %}
+
 {% block body %}
-    <h1>File creation</h1>
+    <div class="container">
+        <div class="page-header">
+            <h1>File creation</h1>
+        </div>
 
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+        {{ form(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('files_index') }}">Back to the list</a>
-        </li>
-    </ul>
+
+        <hr>
+        <ul>
+            <a href="{{ path('files_index') }}" class="btn btn-primary">Back to the list</a>
+
+        </ul>
+    </div>
+
+
 {% endblock %}
+
+{% block javascript_footer %}
+    <script src="{{ asset('js/fileupload.js') }}"></script>
+{% endblock %}
+
+
