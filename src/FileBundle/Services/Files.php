@@ -55,6 +55,16 @@ class Files implements InterfaceFiles
     private $em;
 
     /**
+     * @var \Swift_Mailer
+     */
+    private $mailer;
+
+    /**
+         * @var \Twig_Environment $template
+     */
+    private $template;
+
+    /**
      * @var string $apiCoreHost
      */
     private $apiCoreHost;
@@ -68,11 +78,13 @@ class Files implements InterfaceFiles
      * @param Router $router
      * @param UserManagerInterface $userManager
      * @param EntityManager $entityManager
+     * @param \Swift_Mailer $mailer
+     * @param \Twig_Environment $template
      * @param string $apiCoreHost
      *
      * @throws \ErrorException
      */
-    public function __construct(Manager $managerService, TokenStorage $tokenStorage, Browser $buzz, Router $router, UserManagerInterface $userManager, EntityManager $entityManager, $apiCoreHost)
+    public function __construct(Manager $managerService, TokenStorage $tokenStorage, Browser $buzz, Router $router, UserManagerInterface $userManager, EntityManager $entityManager, \Swift_Mailer $mailer, \Twig_Environment $template, $apiCoreHost)
     {
         $this->cephService          = $managerService;
         $this->tokenStorage         = $tokenStorage;
@@ -85,7 +97,9 @@ class Files implements InterfaceFiles
         $this->buzz                 = $buzz;
         $this->router               = $router;
         $this->fosUserManager       = $userManager;
-        $this->em        = $entityManager;
+        $this->em                   = $entityManager;
+        $this->mailer               = $mailer;
+        $this->template             = $template;
         $this->apiCoreHost          = $apiCoreHost;
     }
 
@@ -154,6 +168,23 @@ class Files implements InterfaceFiles
         //========== Update status user ==========\\
         $convertedFile->setStatus($message);
         $convertedFile->setStatusPercentage($statusPercentage);
+
+
+        if($message == 'Transcoded' && $statusPercentage == 100){
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Transcoding.com: Your file is ready!')
+                ->setFrom(array('transcode.contact@gmail.com' => 'Transcoding.com'))
+                ->setTo($user->getEmail())
+                ->setBody(
+                    $this->template->render(
+                        ':emails:registration.html.twig',
+                        array('file' => $convertedFile)
+                    ),
+                    'text/html'
+                );
+            $this->mailer->send($message);
+        }
+
         $this->em->persist($convertedFile);
         $this->em->flush();
 
