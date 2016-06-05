@@ -1,5 +1,5 @@
 parameters:
     ceph.swift:
         user: "johndoe:swift"
-        key: "G5KPVSzq7esHuEdsO7toCED6gBZtfYcm5oxHS4B6"
+        key: "WzgW9N6q2cJjFyS7v0OD3DAe5xywbDyuPMiBNPHx"
         authurl: "http://10.0.2.15/auth"

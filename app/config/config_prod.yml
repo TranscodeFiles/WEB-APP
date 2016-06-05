@@ -25,3 +25,8 @@ monolog:
             level: debug
         console:
             type:  console
+
+beelab_paypal:
+    username:  "%paypal_username%"
+    password:  "%paypal_password%"
+    signature: "%paypal_signature%"
