@@ -6,7 +6,7 @@ services:
 
     file.files:
         class: "%file.custome.files.class%"
-        arguments: ["@ceph.manager", "@security.token_storage", "@buzz" , "@router","%api_core.host%"]
+        arguments: ["@ceph.manager", "@security.token_storage", "@buzz" , "@router", "@fos_user.user_manager", "@doctrine.orm.default_entity_manager", "%api_core.host%"]
 
 #    @ToDo Convert this controller to service controller
 #    file.controller.file:
