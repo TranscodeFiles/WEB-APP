@@ -17,6 +17,9 @@ parameters:
     oauth.twitter.id: 4X9f1Dj78DcqVvM6NL08GrW6m
     oauth.twitter.secret: mt1PA0F5td0pKOFvnt6ufJ9FvYaZbCT28yvTnDJSfpBck3gBAT
     api_core.host: "lb-core"
+    mailer_transport: gmail
+    mailer_user: transcode.contact@gmail.com
+    mailer_password: Supinf0m1
 
 framework:
     #esi:             ~
