@@ -6,7 +6,7 @@ parameters:
 services:
     app.user_provider:
         class: "%app.user_provider.class%"
-        arguments: ["@fos_user.user_manager", {'facebook': "%oauth.facebook.id%"}, "@ceph.manager"]
+        arguments: ["@fos_user.user_manager", {'facebook': "%oauth.facebook.id%"}, "@event_dispatcher"]
     app.acl:
         class: "%app.acl.class%"
         arguments: ["@security.acl.provider", "@security.token_storage"]
