@@ -2,12 +2,16 @@
 
 namespace FileBundle\Controller;
 
+
+
+
 use FileBundle\Entity\ConvertedFile;
 use FileBundle\Services\Files;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FileBundle\Entity\File;
 use FileBundle\Form\FileType;
+
 
 /**
  * File controller.
@@ -50,6 +54,14 @@ class FileController extends Controller
             //========== Upload file to ceph ==========\\
             $attachment = $file->getAttachment();
 
+            //=== Set duration for entity ===== \\
+            $getid3 = new \getID3();
+            $fileInfo = $getid3->analyze($attachment);
+            $duration = $fileInfo["playtime_seconds"];
+
+
+
+
             //========== Format filename to be accepted by ceph ==========\\
             $fileName = preg_replace('/[ \t]+/', '.', preg_replace('/\s*$^\s*/m', "\n", $attachment->getClientOriginalName()));
             $this->get('file.files')->uploadAction($fileName, file_get_contents($attachment->getRealPath()));
@@ -60,6 +72,8 @@ class FileController extends Controller
             $file->setContentLength($attachment->getClientSize());
             $file->setContentType($attachment->getClientMimeType());
             $file->setStatus("Uploaded");
+            $file->setDuration($duration);
+
 
             //========== Save file in database ==========\\
             $em = $this->getDoctrine()->getManager();

@@ -14,6 +14,7 @@
                     <th>Name</th>
                     <th>Content type</th>
                     <th>Content length</th>
+                    <th>Duration</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
@@ -22,9 +23,10 @@
                 {% for file in files %}
                     <tr>
                         <td><a href="{{ path('files_show', { 'id': file.id }) }}">{{ file.id }}</a></td>
-                        <td>{{ file.name }}</td>
+                        <td>{{ file.name|length > 50 ? file.name|slice(0, 50) ~ '...' : file.name}}</td>
                         <td>{{ file.contentType }}</td>
                         <td>{{ file.contentLength|bytes }}</td>
+                        <td>{{ file.duration|date("i:s") }}m</td>
                         <td>{{ file.status }}</td>
                         <td>
                             <ul>
