@@ -127,6 +127,12 @@ class FileController extends Controller
         return $this->redirectToRoute('files_index');
     }
 
+    /**
+     * Download file to ceph
+     *
+     * @param File $file
+     * @return \Buzz\Message\MessageInterface|\Symfony\Component\HttpFoundation\Response
+     */
     public function downloadAction(File $file)
     {
         return $this->get('file.files')->downloadAction($file->getName());
@@ -149,20 +155,26 @@ class FileController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             //========== Get format uploaded by form ==========\\
             $format = strtolower($form->get('format')->getData());
+
             //========== Create converted file name ==========\\
             $convertedFileName = preg_replace('/\\.[^.\\s]{3,4}$/', '', $file->getName()) . '.' . $format;
+
             //========== Set attributes to converted file ==========\\
             $convertedFile->setName($convertedFileName);
             $convertedFile->setStatus("In progress");
             $convertedFile->setFile($file);
+
             //========== Save file in database ==========\\
             $em = $this->getDoctrine()->getManager();
             $em->persist($convertedFile);
             $em->flush();
+
             //========== Set user acl to object file ==========\\
             $this->get('app.acl')->addObject($convertedFile);
+
             //========== Transcode file ==========\\
             $this->get('file.files')->transcodeFile($file->getName(), $convertedFile->getId(), $format);
+            
             return $this->redirectToRoute('files_show', array('id' => $file->getId()));
         }
 

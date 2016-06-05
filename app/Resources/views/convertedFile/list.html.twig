@@ -7,6 +7,7 @@
         <th>Name</th>
         <th>Content type</th>
         <th>Content length</th>
+        <th>Percentage</th>
         <th>Status</th>
         <th>Actions</th>
     </tr>
@@ -18,8 +19,9 @@
             <td>{{ file.name }}</td>
             <td>{{ file.contentType }}</td>
             <td>{{ file.contentLength }}</td>
+            <td>{{ file.statusPercentage?? "-" }}</td>
             <td>{{ file.status }}</td>
-            {% if file.status == "OK" %}
+            {% if file.status == "Transcoded" %}
                 <td>
                     <ul>
                         <li>
@@ -27,7 +29,8 @@
                         </li>
                     </ul>
                 </td>
-            {% else %}
+            {% endif %}
+            {% if file.statusPercentage == 0 %}
                 <td>
                     <ul>
                         <li>
