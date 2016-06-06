@@ -11,6 +11,11 @@ google_login:
 twitter_login:
     path: /login/check-twitter
 
+fos_user_security_login:
+    path: /login
+    defaults: { _controller: "AppBundle:Security:login" }
+    methods:  [GET, POST]
+
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 

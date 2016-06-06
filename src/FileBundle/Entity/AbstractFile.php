@@ -46,6 +46,12 @@ abstract class AbstractFile
      */
     private $status;
 
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="status_percentage", type="integer")
+     */
+    private $statusPercentage = 0;
 
     /**
      * Get id
@@ -151,5 +157,21 @@ abstract class AbstractFile
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusPercentage()
+    {
+        return $this->statusPercentage;
+    }
+
+    /**
+     * @param int $statusPercentage
+     */
+    public function setStatusPercentage($statusPercentage)
+    {
+        $this->statusPercentage = $statusPercentage;
     }
 }
