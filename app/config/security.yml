@@ -39,6 +39,7 @@ security:
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/files, role: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/converted/files/[^/]+/download, role: IS_AUTHENTICATED_REMEMBERED }
 
     acl:
         connection: default
