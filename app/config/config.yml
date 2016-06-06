@@ -151,8 +151,8 @@ hwi_oauth:
                 include_email: true
 
 beelab_paypal:
-    return_route: "/"
-    cancel_route: "/"
+    return_route: 'app_paypal_completed'
+    cancel_route: "app_paypal_canceled"
     test_mode:    "%kernel.debug%"
     username:  "%paypal_username%"
     password:  "%paypal_password%"

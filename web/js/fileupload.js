@@ -52,6 +52,9 @@ $(function(){
                     // On supprimer le <input type="file">
                     $this.remove();
                     $submit.remove();
+                    if(response.url != undefined){
+                        window.location.href = response.url;
+                    }
                 },
                 error: function(response){
                     // On indique qu'il y a une erreur dans la barre de chargement
@@ -62,6 +65,7 @@ $(function(){
                         .text('Erreur');
                     // On supprime le <input type="file">
                     $this.remove();
+
 
                 },
                 xhr: function(){

@@ -4,9 +4,11 @@
     <div class="container">
         <div class="page-header">
             <h1>Mes fichiers :</h1>
-        </div>
 
-        <div class="table-responsive">
+
+        </div>
+        <p>/10 Go</p>
+        <div class="table-responsive" >
             <table class="table">
                 <thead>
                 <tr>
@@ -25,8 +27,8 @@
                         <td><a href="{{ path('files_show', { 'id': file.id }) }}">{{ file.id }}</a></td>
                         <td>{{ file.name|length > 50 ? file.name|slice(0, 50) ~ '...' : file.name}}</td>
                         <td>{{ file.contentType }}</td>
-                        <td>{{ file.contentLength|bytes }}</td>
-                        <td>{{ file.duration|date("i:s") }}m</td>
+                        <td>{{ file.contentLength }}</td>
+                        <td>{{ file.duration|date("G:i:s") }}m</td>
                         <td>{{ file.status }}</td>
                         <td>
                             <ul>
@@ -42,6 +44,7 @@
         <hr>
         <ul>
             <a href="{{ path('files_new') }}" class="btn btn-primary pull-right">Upload a new file</a></li>
+            <a href="{{ path('app_paypal_paiement') }}" class="btn btn-primary ">Our offers</a></li>
         </ul>
     </div>
 
