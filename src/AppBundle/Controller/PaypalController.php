@@ -15,11 +15,14 @@ class PaypalController extends Controller
         return $this->render('AppBundle:Paypal:index.html.twig');
     }
 
+
     public function paymentAction(Request $request)
     {
         
-        $amount = 1;  // get an amount, e.g. from your cart
+        $amount = 10.00;  // get an amount, e.g. from your cart
+
         $transaction = new Transaction($amount);
+
         try {
             $response = $this->get('beelab_paypal.service')->setTransaction($transaction)->start();
             $this->getDoctrine()->getManager()->persist($transaction);
@@ -33,18 +36,28 @@ class PaypalController extends Controller
 
     /**
      * The route configured in "cancel_route" (see above) should point here
+     *
      */
     public function canceledPaymentAction(Request $request)
     {
+
+
         $token = $request->query->get('token');
+
+        /**
+         * @var Transaction $transaction
+         */
         $transaction = $this->getDoctrine()->getRepository('AppBundle:Transaction')->findOneByToken($token);
         if (is_null($transaction)) {
             throw $this->createNotFoundException(sprintf('Transaction with token %s not found.', $token));
         }
         $transaction->cancel(null);
+
+
         $this->getDoctrine()->getManager()->flush();
 
-        return array(); // or a Response...
+        return $this->render('AppBundle:Paypal:canceled.html.twig');
+
     }
 
     /**
@@ -52,17 +65,28 @@ class PaypalController extends Controller
      */
     public function completedPaymentAction(Request $request)
     {
+        $tokenStorage = $this->get('security.token_storage');
+        $user = $tokenStorage->getToken()->getUser();
+
         $token = $request->query->get('token');
+        /**
+         * @var Transaction $transaction
+         */
         $transaction = $this->getDoctrine()->getRepository('AppBundle:Transaction')->findOneByToken($token);
         if (is_null($transaction)) {
             throw $this->createNotFoundException(sprintf('Transaction with token %s not found.', $token));
         }
         $this->get('beelab_paypal.service')->setTransaction($transaction)->complete();
+
+        $duration = 3600 * $transaction->getAmount();
+        dump($duration);
+        $user->addTranscodetime(100);
+
         $this->getDoctrine()->getManager()->flush();
         if (!$transaction->isOk()) {
-            return array(); // or a Response (in case of error)
+            return $this->render('AppBundle:Paypal:canceled.html.twig');
         }
 
-        return array(); // or a Response (in case of success)
+      return  $this->render('AppBundle:Paypal:completed.html.twig');
     }
 }

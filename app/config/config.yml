@@ -20,6 +20,9 @@ parameters:
     paypal_username: "204620_api1.supinfo.com"
     paypal_password: "5Z8KSY9ZJ3L3JEMW"
     paypal_signature: "AFcWxV21C7fd0v3bYYYRCpSSRl31AeBiaIqewWjSwFHNExOoaj-clVrT"
+    mailer_transport: gmail
+    mailer_user: transcode.contact@gmail.com
+    mailer_password: Supinf0m1
 
 framework:
     #esi:             ~
