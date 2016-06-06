@@ -52,4 +52,15 @@ interface InterfaceObject
      * @throws \ErrorException
      */
     public function deleteObject($objectName);
+
+    /**
+     * Return metadata object in container
+     * 
+     * @param  string $objectName
+     * 
+     * @return mixed
+     * 
+     * @throws \ErrorException
+     */
+    public function getMetaDataObject($objectName);
 }
