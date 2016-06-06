@@ -8,11 +8,13 @@ use Symfony\Component\Form\Extension\Core\Type\FileType as FileFieldType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @inheritdoc
+ */
 class FileType extends AbstractType
 {
     /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
+     * @inheritdoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -25,7 +27,7 @@ class FileType extends AbstractType
     }
     
     /**
-     * @param OptionsResolver $resolver
+     * @inheritdoc
      */
     public function configureOptions(OptionsResolver $resolver)
     {

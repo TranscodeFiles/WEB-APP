@@ -5,7 +5,11 @@ namespace FileBundle\Services;
 use Buzz\Browser;
 use Common\CephBundle\Services\Container;
 use Common\CephBundle\Services\Manager;
+use Doctrine\ORM\EntityManager;
 use FileBundle\Factory\InterfaceFiles;
+use FOS\UserBundle\Model\UserManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 
@@ -41,6 +45,16 @@ class Files implements InterfaceFiles
     private $router;
 
     /**
+     * @var UserManagerInterface $fosUserManager
+     */
+    private $fosUserManager;
+
+    /**
+     * @var EntityManager $em
+     */
+    private $em;
+
+    /**
      * @var string $apiCoreHost
      */
     private $apiCoreHost;
@@ -52,18 +66,26 @@ class Files implements InterfaceFiles
      * @param TokenStorage $tokenStorage
      * @param Browser $buzz
      * @param Router $router
+     * @param UserManagerInterface $userManager
+     * @param EntityManager $entityManager
      * @param string $apiCoreHost
      *
      * @throws \ErrorException
      */
-    public function __construct(Manager $managerService, TokenStorage $tokenStorage, Browser $buzz, Router $router, $apiCoreHost)
+    public function __construct(Manager $managerService, TokenStorage $tokenStorage, Browser $buzz, Router $router, UserManagerInterface $userManager, EntityManager $entityManager, $apiCoreHost)
     {
         $this->cephService          = $managerService;
         $this->tokenStorage         = $tokenStorage;
-        $this->cephContainerSerivce = $managerService->connection()
-            ->getContainer("user" . $this->tokenStorage->getToken()->getUser()->getId());
+        if ($this->tokenStorage->getToken()->getUser() != "anon.") {
+            $this->cephContainerSerivce = $managerService->connection()
+                ->getContainer("user" . $this->tokenStorage->getToken()->getUser()->getId());
+        } else {
+            $this->cephContainerSerivce = $managerService;
+        }
         $this->buzz                 = $buzz;
         $this->router               = $router;
+        $this->fosUserManager       = $userManager;
+        $this->em        = $entityManager;
         $this->apiCoreHost          = $apiCoreHost;
     }
 
@@ -107,5 +129,34 @@ class Files implements InterfaceFiles
     public function deleteAction($fileName)
     {
         return $this->cephContainerSerivce->deleteObject($fileName);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function updateStatusAction($userId, $code, $statusPercentage, $convertedFile, $file, $message)
+    {
+        $authorizedCodes = ["201", "500"];
+        if (!in_array($code, $authorizedCodes)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $user = $this->fosUserManager->findUserBy(array('id' => $userId));
+
+        if (empty($user) || !$user->isEnabled()) {
+            throw new AccessDeniedHttpException("User is not valid");
+        }
+
+        if ($code != 500 && empty($file)) {
+            throw new  \ErrorException("Converted file must bed specified");
+        }
+
+        //========== Update status user ==========\\
+        $convertedFile->setStatus($message);
+        $convertedFile->setStatusPercentage($statusPercentage);
+        $this->em->persist($convertedFile);
+        $this->em->flush();
+
+        return new Response("Object is update !");
     }
 }
