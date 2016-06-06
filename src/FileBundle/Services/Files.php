@@ -80,12 +80,12 @@ class Files implements InterfaceFiles
             $this->cephContainerSerivce = $managerService->connection()
                 ->getContainer("user" . $this->tokenStorage->getToken()->getUser()->getId());
         } else {
-            $this->cephContainerSerivce = $managerService;
+            $this->cephContainerSerivce = $managerService->connection();
         }
         $this->buzz                 = $buzz;
         $this->router               = $router;
         $this->fosUserManager       = $userManager;
-        $this->em        = $entityManager;
+        $this->em                   = $entityManager;
         $this->apiCoreHost          = $apiCoreHost;
     }
 
@@ -149,6 +149,13 @@ class Files implements InterfaceFiles
 
         if ($code != 500 && empty($file)) {
             throw new  \ErrorException("Converted file must bed specified");
+        }
+
+        //========== Set content length and content type ==========\\
+        if ($statusPercentage == 100 && $message == "Transcoded" && !empty($file)) {
+            $metaData = $this->cephContainerSerivce->getContainer('user' . $userId)->getMetaDataObject($file);
+            $convertedFile->setContentLength($metaData['Content-Length']);
+            $convertedFile->setContentType($metaData['Content-Type']);
         }
 
         //========== Update status user ==========\\
