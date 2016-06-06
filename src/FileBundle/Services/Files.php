@@ -172,7 +172,7 @@ class Files implements InterfaceFiles
             $convertedFile->setContentType($metaData['Content-Type']);
 
 
-            $message = \Swift_Message::newInstance()
+            $messageMail = \Swift_Message::newInstance()
                 ->setSubject('Transcoding.com: Your file is ready!')
                 ->setFrom(array('transcode.contact@gmail.com' => 'Transcoding.com'))
                 ->setTo($user->getEmail())
@@ -183,7 +183,7 @@ class Files implements InterfaceFiles
                     ),
                     'text/html'
                 );
-            $this->mailer->send($message);
+            $this->mailer->send($messageMail);
         }
 
         //========== Update status user ==========\\
