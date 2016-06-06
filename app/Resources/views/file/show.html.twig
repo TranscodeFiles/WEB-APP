@@ -43,9 +43,16 @@
                 <td>{{ file.contentLength|bytes }}</td>
             </tr>
             <tr>
+                <th>Duration</th>
+                <td>{{ file.duration|date("G:i:s") }}m</td>
+            </tr>
+
+            <tr>
                 <th>Status</th>
                 <td>{{ file.status }}</td>
             </tr>
+
+
             </tbody>
         </table>
 

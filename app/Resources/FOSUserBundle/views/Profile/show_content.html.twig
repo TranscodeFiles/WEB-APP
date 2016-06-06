@@ -16,6 +16,10 @@
                         <th>email</th>
                         <td>{{ user.email }}</td>
                     </tr>
+                    <tr>
+                        <th>Temps de transcode</th>
+                        <td>{{ user.transcodetime|date("G:i:s") }} </td>
+                    </tr>
 
 
                 </table>
