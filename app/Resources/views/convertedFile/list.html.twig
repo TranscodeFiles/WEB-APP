@@ -2,47 +2,48 @@
 
     <h1>Transcoded files list</h1>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Content type</th>
-            <th>Content length</th>
-            <th>Percentage</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for file in transcodedFiles %}
-            <tr>
-                <td>{{ file.id }}</a></td>
-                <td>{{ file.name }}</td>
-                <td>{{ file.contentType }}</td>
-                <td>{{ file.contentLength }}</td>
-                <td>{{ file.statusPercentage?? "-" }}</td>
-                <td>{{ file.status }}</td>
-                {% if file.status == "Transcoded" %}
-                    <td>
 
-                        <a href="{{ path('converted_file_download', { 'id': file.id }) }}" class="btn btn-primary">Download</a>
+    <div class="row">
 
 
-                    </td>
-                {% endif %}
-                {% if file.statusPercentage == 0 %}
-                    <td>
+    {% for file in transcodedFiles %}
+
+        <div class="file__transcoded" data-url-state="{{ path('converted_file_getstate', { 'id': file.id }) }}" data-id="{{ file.id }}">
+            <h3>{{ file.name }}</h3>
+            <div class="col-xs-10">
+                <div class="progress ">
+                    <div class="progress-bar" role="progressbar" aria-valuenow=""
+                         aria-valuemin="0" aria-valuemax="{{ file.statusPercentage }}" style="width: {{ file.statusPercentage }}%;">
+                        {{ file.status }}
+                    </div>
+                </div>
+            </div>
+
+            {% if file.status == "Transcoded" %}
+
+                <div class="col-xs-2 text-center">
+                    <a href="{{ path('converted_file_download', { 'id': file.id }) }}" class="btn btn-primary">Download</a>
+                </div>
 
 
-                        <a href="{{ path('files_retry_transcode', { 'id': file.id }) }}" class="btn btn-info">Retry</a>
+
+            {% endif %}
+            {% if file.statusPercentage == 0 %}
+
+                <div class="col-xs-2 text-center ">
+                    <a href="{{ path('files_retry_transcode', { 'id': file.id }) }}" class="btn btn-info">Retry</a>
+                </div>
 
 
-                    </td>
-                {% endif %}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+
+
+
+            {% endif %}
+        </div>
+
+    {% endfor %}
+    </div>
+
+
 
 </div>
