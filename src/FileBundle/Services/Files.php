@@ -92,7 +92,7 @@ class Files implements InterfaceFiles
             $this->cephContainerSerivce = $managerService->connection()
                 ->getContainer("user" . $this->tokenStorage->getToken()->getUser()->getId());
         } else {
-            $this->cephContainerSerivce = $managerService;
+            $this->cephContainerSerivce = $managerService->connection();
         }
         $this->buzz                 = $buzz;
         $this->router               = $router;
@@ -165,13 +165,14 @@ class Files implements InterfaceFiles
             throw new  \ErrorException("Converted file must bed specified");
         }
 
-        //========== Update status user ==========\\
-        $convertedFile->setStatus($message);
-        $convertedFile->setStatusPercentage($statusPercentage);
+        //========== Set content length and content type ==========\\
+        if ($statusPercentage == 100 && $message == "Transcoded" && !empty($file)) {
+            $metaData = $this->cephContainerSerivce->getContainer('user' . $userId)->getMetaDataObject($file);
+            $convertedFile->setContentLength($metaData['Content-Length']);
+            $convertedFile->setContentType($metaData['Content-Type']);
 
 
-        if($message == 'Transcoded' && $statusPercentage == 100){
-            $message = \Swift_Message::newInstance()
+            $messageMail = \Swift_Message::newInstance()
                 ->setSubject('Transcoding.com: Your file is ready!')
                 ->setFrom(array('transcode.contact@gmail.com' => 'Transcoding.com'))
                 ->setTo($user->getEmail())
@@ -182,9 +183,12 @@ class Files implements InterfaceFiles
                     ),
                     'text/html'
                 );
-            $this->mailer->send($message);
+            $this->mailer->send($messageMail);
         }
 
+        //========== Update status user ==========\\
+        $convertedFile->setStatus($message);
+        $convertedFile->setStatusPercentage($statusPercentage);
         $this->em->persist($convertedFile);
         $this->em->flush();
 
