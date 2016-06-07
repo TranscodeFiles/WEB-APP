@@ -2,6 +2,7 @@
 
 namespace Common\CephBundle\Services;
 
+use Buzz\Message\MessageInterface;
 use Common\CephBundle\Factory\InterfaceObject;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -58,6 +59,9 @@ class Object implements InterfaceObject
     public function listObjects()
     {
         try {
+            /**
+             * @var MessageInterface $responseCeph
+             */
             list($code, $responseCeph) = $this->requestService->get(
                 $this->containerService->getContainerUrl()
             );
@@ -73,6 +77,9 @@ class Object implements InterfaceObject
     public function getObject($objectName)
     {
         try {
+            /**
+             * @var MessageInterface $responseCeph
+             */
             list($code, $responseCeph) = $this->requestService->get(
                 $this->containerService->getContainerUrl() . "/" . $objectName
             );
@@ -127,6 +134,34 @@ class Object implements InterfaceObject
             );
         } catch (\Exception $e) {
             throw new \ErrorException("Could not delete object " . $objectName . " an error append : " . $e->getMessage());
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getMetaDataObject($objectName)
+    {
+        try {
+            /**
+             * @var MessageInterface $headResponse
+             */
+            list($code, $headResponse) =  $this->requestService->head(
+                $this->containerService->getContainerUrl() . "/" . $objectName
+            );
+            $headers = $headResponse->getHeaders();
+            return array(
+                "Content-Length" => substr($headers[1], 16),
+                "Accept-Ranges"  => substr($headers[2], 15),
+                "X-Timestamp"    => substr($headers[4], 13),
+                "X-Trans-Id"     => substr($headers[6], 12),
+                "Content-Type"   => substr($headers[7], 14),
+            );
+
+        } catch (NotFoundHttpException $e) {
+            throw new NotFoundHttpException("Could not get meta data object " . $objectName . " an error append : " . $e->getMessage());
+        } catch (\Exception $e) {
+            throw new \ErrorException("Could not get meta data object " . $objectName . " an error append : " . $e->getMessage());
         }
     }
 }

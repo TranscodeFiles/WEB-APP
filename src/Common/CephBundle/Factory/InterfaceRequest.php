@@ -59,4 +59,15 @@ interface InterfaceRequest
      */
     public function getCode(array $headers);
 
+    /**
+     * Send request head ti ceph
+     * 
+     * @param string $url
+     * 
+     * @param array $headers
+     * 
+     * @return mixed
+     */
+    public function head($url, $headers = array());
+
 }

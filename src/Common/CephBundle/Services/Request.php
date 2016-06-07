@@ -170,4 +170,33 @@ class Request implements InterfaceRequest
             throw new \ErrorException("An error occurred on generate request : " . $e->getMessage());
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function head($url, $headers = array())
+    {
+        try {
+            $responseCeph = $this->generateRequest("head", $url, $headers);
+            $code = $this->getCode($responseCeph->getHeaders());
+            $successCodes = array(
+                "200" => "OK"
+            );
+            if (array_key_exists($code, $successCodes)) {
+                return array(
+                    $code,
+                    $responseCeph
+                );
+            }
+            $failedCodes = array(
+                "404" => "Not found",
+            );
+            if (array_key_exists($code, $failedCodes)) {
+                throw new NotFoundHttpException($failedCodes[$code], null, $code);
+            }
+            throw new \ErrorException("An error occurred on head " . $url);
+        } catch (\Exception $e) {
+            throw new \ErrorException("An error occurred on generate request : " . $e->getMessage());
+        }
+    }
 }
