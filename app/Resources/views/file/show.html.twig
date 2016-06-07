@@ -63,3 +63,6 @@
     {% include 'convertedFile/list.html.twig' with {'transcodedFiles': file.convertedFiles} %}
 
 {% endblock %}
+{% block javascript_footer %}
+    <script src="{{ asset('js/updatefilestatus.js') }}"></script>
+{% endblock %}

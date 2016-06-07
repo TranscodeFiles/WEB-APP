@@ -4,6 +4,7 @@ namespace FileBundle\Controller;
 
 use FileBundle\Entity\ConvertedFile;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -13,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ConvertedFileController extends Controller
 {
+
     /**
      * Update states
      *
@@ -32,6 +34,26 @@ class ConvertedFileController extends Controller
         $userId           = str_replace("user", "", $request->get('UserId'));
 
         return $this->get('file.files')->updateStatusAction($userId, $code, $statusPercentage, $convertedFile, $file, $message);
+    }
+
+    /**
+     * Retourne in JSON the state of the file
+     *
+     * @param ConvertedFile $convertedFile
+     *
+     * @return JsonResponse
+     */
+    public function getStateAction(ConvertedFile $convertedFile){
+
+        $percentage = $convertedFile->getStatusPercentage();
+        $status = $convertedFile->getStatus();
+
+        $responseJson = new JsonResponse(array(
+            "percentage" => $percentage,
+            "state" => $status
+        ));
+
+        return $responseJson;
     }
 
     /**
