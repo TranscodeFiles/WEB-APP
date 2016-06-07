@@ -4,6 +4,7 @@ namespace FileBundle\Controller;
 
 use FileBundle\Entity\ConvertedFile;
 use FileBundle\Services\Files;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FileBundle\Entity\File;
@@ -75,7 +76,12 @@ class FileController extends Controller
             //========== Set user acl to object file ==========\\
             $this->get('app.acl')->addObject($file);
 
-            return $this->redirectToRoute('files_show', array('id' => $file->getId()));
+            return new JsonResponse(
+                array(
+                    "url" => $this->generateUrl("files_show", array('id' => $file->getId()))
+                )
+            );
+
         }
 
         return $this->render('file/new.html.twig', array(

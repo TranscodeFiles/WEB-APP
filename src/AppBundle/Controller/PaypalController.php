@@ -80,7 +80,7 @@ class PaypalController extends Controller
 
         $duration = 3600 * $transaction->getAmount();
         dump($duration);
-        $user->addTranscodetime(100);
+        $user->addTranscodetime($duration);
 
         $this->getDoctrine()->getManager()->flush();
         if (!$transaction->isOk()) {
