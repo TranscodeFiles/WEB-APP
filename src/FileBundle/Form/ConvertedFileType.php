@@ -20,13 +20,22 @@ class ConvertedFileType extends AbstractType
     protected $extension;
 
     /**
-     * ConvertedFileType constructor.
-     * 
-     * @param string $extension
+     * Les extensions des fichiers transcodés.
+     *
+     * @var array $convertedFileExtension
      */
-    public function __construct ($extension)
+    protected $convertedFileExtension;
+
+    /**
+     * ConvertedFileType constructor.
+     *
+     * @param string $extension
+     * @param $convertedFileExtension
+     */
+    public function __construct ($extension, $convertedFileExtension)
     {
         $this->extension = $extension;
+        $this->convertedFileExtension = $convertedFileExtension;
     }
 
     /**
@@ -52,6 +61,12 @@ class ConvertedFileType extends AbstractType
                 break;
             default:
                 break;
+        }
+
+        foreach ($this->convertedFileExtension as $extensions) {
+            if (in_array($extensions, $choices)) {
+                unset($choices[array_search($extensions, $choices)]);
+            }
         }
 
         $builder

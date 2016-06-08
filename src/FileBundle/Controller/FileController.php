@@ -173,15 +173,17 @@ class FileController extends Controller
     public function transcodeAction(Request $request, File $file)
     {
         $convertedFile = new ConvertedFile();
-
-        //var_dump($file->getConvertedFiles());
-        //die();
+        
+        $convertedFileExtensions = array();
+        foreach ($file->getConvertedFiles() as $convertedFile) {
+            array_push($convertedFileExtensions, pathinfo($convertedFile->getName())['extension']);
+        }
 
         //========== Get extension ==========\\
         $name = $file->getName();
         $extension = pathinfo($name)['extension'];
 
-        $form = $this->createForm(new ConvertedFileType($extension), $convertedFile);
+        $form = $this->createForm(new ConvertedFileType($extension, $convertedFileExtensions), $convertedFile);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
