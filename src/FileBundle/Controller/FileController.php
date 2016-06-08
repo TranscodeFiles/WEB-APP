@@ -3,6 +3,7 @@
 namespace FileBundle\Controller;
 
 use FileBundle\Entity\ConvertedFile;
+use FileBundle\Form\ConvertedFileType;
 use FileBundle\Services\Files;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -149,7 +150,12 @@ class FileController extends Controller
     public function transcodeAction(Request $request, File $file)
     {
         $convertedFile = new ConvertedFile();
-        $form = $this->createForm('FileBundle\Form\ConvertedFileType', $convertedFile);
+
+        //========== Get extension ==========\\
+        $name = $file->getName();
+        $extension = pathinfo($name)['extension'];
+
+        $form = $this->createForm(new ConvertedFileType($extension), $convertedFile);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

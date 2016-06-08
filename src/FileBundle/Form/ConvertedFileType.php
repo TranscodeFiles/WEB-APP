@@ -12,18 +12,41 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConvertedFileType extends AbstractType
 {
+    protected $extension;
+
+    public function __construct ($extension)
+    {
+        $this->extension = $extension;
+    }
+
     /**
      * @inheritdoc
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $choices = array(
+            'MP4' => 'mp4',
+            'MP3' => 'mp3',
+            'AVI' => 'avi'
+        );
+
+        switch ($this->extension) {
+            case 'avi':
+                unset($choices['AVI']);
+                break;
+            case 'mp3':
+                unset($choices['MP3']);
+                break;
+            case 'mp4':
+                unset($choices['MP4']);
+                break;
+            default:
+                break;
+        }
+
         $builder
             ->add('format', ChoiceType::class, array(
-                    'choices' => array(
-                        'MP4' => 'mp4',
-                        'MP3' => 'mp3',
-                        'AVI' => 'avi'
-                ),
+                'choices' => $choices,
                 'mapped' => false
             ));
     }
