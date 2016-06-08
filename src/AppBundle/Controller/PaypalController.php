@@ -78,23 +78,26 @@ class PaypalController extends Controller
     {
         $tokenStorage = $this->get('security.token_storage');
         $user = $tokenStorage->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
 
         $token = $request->query->get('token');
         /**
          * @var Transaction $transaction
          */
         $transaction = $this->getDoctrine()->getRepository('AppBundle:Transaction')->findOneByToken($token);
+
+
+        if($transaction->getStatus()){
+            $this->addFlash("warning", "Erreur lors de l'ajout de solde");
+            return $this->redirectToRoute("app_paypal_paiement");
+        }
+
         if (is_null($transaction)) {
             throw $this->createNotFoundException(sprintf('Transaction with token %s not found.', $token));
         }
         $this->get('beelab_paypal.service')->setTransaction($transaction)->complete();
-
-
         $this->getDoctrine()->getManager()->flush();
-
         if (!$transaction->isOk()) {
-            dump($transaction);
-            die();
             return $this->render('AppBundle:Paypal:canceled.html.twig');
         }
 
@@ -114,14 +117,11 @@ class PaypalController extends Controller
                 break;
         }
         $duration = $duration * 3600;
-        dump($duration);
-
+        if($transaction->getStatus())
         $user->addTranscodetime($duration);
-        $this->getDoctrine()->getManager()->flush();
 
-
-
-
+        $em->persist($user);
+        $em->flush();
 
 
 

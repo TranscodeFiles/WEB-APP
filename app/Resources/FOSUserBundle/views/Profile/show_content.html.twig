@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <th>Temps de transcode</th>
-                        <td>{{ user.transcodetime|date("G:i:s") }} </td>
+                        <td>{{ app.user.transcodetime|date("d") ~ " jours " ~ app.user.transcodetime|date("G") ~ " heures " ~ app.user.transcodetime|date("i") ~ " minutes " }} </td>
                     </tr>
 
 
