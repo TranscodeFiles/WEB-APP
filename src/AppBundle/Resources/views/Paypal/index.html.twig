@@ -18,7 +18,7 @@
        <div class="container">
 
            <div class="page-header">
-               Temps restant de transcode : {{ app.user.transcodetime|date("G:i:s") }}
+               Temps restant de transcode : {{ app.user.transcodetime|date("d") ~ " jours " ~ app.user.transcodetime|date("G") ~ " heures " ~ app.user.transcodetime|date("i") ~ " minutes " }}
            </div>
                <div class="row">
                    <div class="offer col-md-4">

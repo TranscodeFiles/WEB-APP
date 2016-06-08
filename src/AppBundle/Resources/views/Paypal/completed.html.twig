@@ -8,7 +8,7 @@
     <div class="container">
         <div class="jumbotron">
             <p>Votre paiement à bien été effectué !</p>
-            <p>Votre solde s'élève maintenant à : {{ app.user.transcodetime|date("G:i:s") }}</p>
+            <p>Votre solde s'élève maintenant à : {{ app.user.transcodetime|date("d") ~ " jours " ~ app.user.transcodetime|date("G") ~ " heures " ~ app.user.transcodetime|date("i") ~ " minutes " }}</p>
         </div>
         <a href="{{ path("files_index") }}" class="btn btn-primary">Retour</a>
 
