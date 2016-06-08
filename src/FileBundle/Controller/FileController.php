@@ -2,6 +2,7 @@
 
 namespace FileBundle\Controller;
 
+use ErrorException;
 use FileBundle\Entity\ConvertedFile;
 use FileBundle\Form\ConvertedFileType;
 use FileBundle\Services\Files;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FileBundle\Entity\File;
 use FileBundle\Form\FileType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * File controller.
@@ -44,14 +46,25 @@ class FileController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            //========== Verify if exists ==========\\
+            $exists = true;
+            try {
+                $object = $this->get('file.files')->downloadAction($file->getAttachment()->getClientOriginalName());
+            } catch (ErrorException $exception) {
+                $exists = false;
+            }
+            if ($exists) {
+                return new Response('file already exists', 423);
+            }
+            
             //========== Get user ==========\\
             $tokenStorage = $this->get('security.token_storage');
             $user = $tokenStorage->getToken()->getUser();
 
-            //========== Upload file to ceph ==========\\
+            //========== Get attachment from file ==========\\
             $attachment = $file->getAttachment();
 
-            //========== Format filename to be accepted by ceph ==========\\
+            //========== Format filename to be accepted by ceph and upload ==========\\
             $fileName = preg_replace('/[ \t]+/', '.', preg_replace('/\s*$^\s*/m', "\n", $attachment->getClientOriginalName()));
             $this->get('file.files')->uploadAction($fileName, file_get_contents($attachment->getRealPath()));
 

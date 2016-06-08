@@ -59,7 +59,7 @@ $(function(){
                         .css('width', '100%')
                         .removeClass('progress-bar-success')
                         .addClass('progress-bar-danger')
-                        .text('Erreur');
+                        .text('Erreur : ' + response.responseText);
                     // On supprime le <input type="file">
                     $this.remove();
 
