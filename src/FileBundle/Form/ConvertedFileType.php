@@ -12,8 +12,18 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConvertedFileType extends AbstractType
 {
+    /**
+     * L'extension du fichier courant.
+     *
+     * @var string $extension
+     */
     protected $extension;
 
+    /**
+     * ConvertedFileType constructor.
+     * 
+     * @param string $extension
+     */
     public function __construct ($extension)
     {
         $this->extension = $extension;
