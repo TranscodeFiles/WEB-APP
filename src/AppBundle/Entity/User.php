@@ -52,6 +52,13 @@ class User extends BaseUser
      */
     public $files;
 
+
+    /**
+     * @var integer
+     * @ORM\Column(name="transcodetime", type="integer")
+     */
+    public $transcodetime = 0;
+
     /**
      * User constructor.
      */
@@ -214,4 +221,39 @@ class User extends BaseUser
     {
         return $this->files;
     }
+
+    /**
+     * @return int
+     */
+    public function getTranscodetime()
+    {
+        return $this->transcodetime;
+    }
+
+    /**
+     * @param int $transcodetime
+     */
+    public function setTranscodetime($transcodetime)
+    {
+        $this->transcodetime = $transcodetime;
+    }
+
+    /**
+     * @param int $transcodetime
+     */
+    public function addTranscodetime($transcodetime)
+    {
+        $this->transcodetime = $this->transcodetime + $transcodetime;
+    }
+
+    /**
+     * @param int $transcodetime
+     */
+    public function removeTranscodetime($transcodetime)
+    {
+        $this->transcodetime = $this->transcodetime - $transcodetime;
+    }
+
+
+    
 }

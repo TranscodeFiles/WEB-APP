@@ -1,0 +1,13 @@
+{% extends "AppBundle::base.html.twig" %}
+
+{% block title_page %}
+    {{ "app.homepage.title"|trans }}
+{% endblock %}
+
+{% block body %}
+   <div class="container">
+       <a href="{{ path('app_paypal_purchase') }}" class="btn btn-primary">Abonnement à 1 euros</a>
+
+   </div>
+
+{% endblock %}

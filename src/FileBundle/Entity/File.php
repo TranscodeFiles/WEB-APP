@@ -31,6 +31,28 @@ class File extends AbstractFile
     public $attachment;
 
     /**
+     * @var int $duration
+     * @ORM\Column(name="duration", type="integer")
+     */
+    public $duration;
+
+    /**
+     * @return int
+     */
+    public function getDuration()
+    {
+        return $this->duration;
+    }
+
+    /**
+     * @param int $duration
+     */
+    public function setDuration($duration)
+    {
+        $this->duration = $duration;
+    }
+
+    /**
      * File constructor.
      */
     public function __construct()

@@ -27,7 +27,9 @@
         "friendsofsymfony/user-bundle": "~2.0@dev",
         "components/jquery": "1.11.1",
         "hwi/oauth-bundle": "0.4.*",
-        "sensio/buzz-bundle": "^1.1"
+        "sensio/buzz-bundle": "^1.1",
+        "beelab/paypal-bundle": "^1.1",
+        "james-heinrich/getid3": "^1.9"
     },
     "require-dev": {
         "sensio/generator-bundle": "~3.0",

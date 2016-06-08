@@ -6,6 +6,7 @@ use ErrorException;
 use FileBundle\Entity\ConvertedFile;
 use FileBundle\Form\ConvertedFileType;
 use FileBundle\Services\Files;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FileBundle\Entity\File;
@@ -13,8 +14,8 @@ use FileBundle\Form\FileType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * File controller.
- *
+ * Class FileController
+ * @package FileBundle\Controller
  */
 class FileController extends Controller
 {
@@ -64,7 +65,12 @@ class FileController extends Controller
             //========== Get attachment from file ==========\\
             $attachment = $file->getAttachment();
 
-            //========== Format filename to be accepted by ceph and upload ==========\\
+            //=== Set duration for entity ===== \\
+            $getid3 = new \getID3();
+            $fileInfo = $getid3->analyze($attachment);
+            $duration = $fileInfo["playtime_seconds"];
+
+            //========== Format filename to be accepted by ceph ==========\\
             $fileName = preg_replace('/[ \t]+/', '.', preg_replace('/\s*$^\s*/m', "\n", $attachment->getClientOriginalName()));
             $this->get('file.files')->uploadAction($fileName, file_get_contents($attachment->getRealPath()));
 
@@ -74,6 +80,7 @@ class FileController extends Controller
             $file->setContentLength($attachment->getClientSize());
             $file->setContentType($attachment->getClientMimeType());
             $file->setStatus("Uploaded");
+            $file->setDuration($duration);
 
             //========== Save file in database ==========\\
             $em = $this->getDoctrine()->getManager();
@@ -83,7 +90,12 @@ class FileController extends Controller
             //========== Set user acl to object file ==========\\
             $this->get('app.acl')->addObject($file);
 
-            return $this->redirectToRoute('files_show', array('id' => $file->getId()));
+            return new JsonResponse(
+                array(
+                    "url" => $this->generateUrl("files_show", array('id' => $file->getId()))
+                )
+            );
+
         }
 
         return $this->render('file/new.html.twig', array(
@@ -181,6 +193,7 @@ class FileController extends Controller
             //========== Set attributes to converted file ==========\\
             $convertedFile->setName($convertedFileName);
             $convertedFile->setStatus("In progress");
+            $convertedFile->setStatusPercentage(10);
             $convertedFile->setFile($file);
 
             //========== Save file in database ==========\\

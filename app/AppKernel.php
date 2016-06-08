@@ -22,6 +22,7 @@ class AppKernel extends Kernel
             new HWI\Bundle\OAuthBundle\HWIOAuthBundle(),
             new Sensio\Bundle\BuzzBundle\SensioBuzzBundle(),
             new Common\CephBundle\CephBundle(),
+            new Beelab\PaypalBundle\BeelabPaypalBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'), true)) {
