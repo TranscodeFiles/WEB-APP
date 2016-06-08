@@ -2,15 +2,17 @@ $(function(){
 
     $convertedFiles = $(".file__transcoded");
 
-    function getState(idInterval, $url , $id, $progressbar){
+    function getState(idInterval, $url, $progressbar, $urlDownload, $urlRetry, $urlDelete, $buttons){
 
         //Si le fichier est transcoder alors on arrête
-        if($progressbar.text() == "Transcoded" ){
+        if ($progressbar.text() == "Transcoded") {
             $progressbar.removeClass("progress-bar-striped active");
-
+            successButton($buttons, $urlDownload, $urlDelete);
             clearInterval(idInterval);
-
+            return;
         }
+
+        $progressbar.addClass("progress-bar-striped active");
 
         $.ajax({
             type: 'GET',
@@ -24,45 +26,66 @@ $(function(){
             processData: false,
             success: function(response){
 
-                $progressbar.css('width', response.percentage + '%');
+                var percentage = response.percentage;
+
+                if (typeof percentage != 'undefined' && percentage == 0) {
+                    retryButton($buttons, $urlRetry, $urlDelete);
+                    clearInterval(idInterval);
+                } else {
+                    $progressbar.css('width', response.percentage + '%');
+                }
+
                 $progressbar.text(response.state);
-
-
-
 
             },
             error: function(response){
-
-
-
             }
-
         });
-
-
     }
 
-    $convertedFiles.each(function(index){
+    /**
+     * Display button for download transcoded file and delete button
+     *
+     * @param $parent
+     * @param $urlDownload
+     * @param $urlDelete
+     */
+    function successButton($parent, $urlDownload, $urlDelete) {
+        var $buttonSuccess = "<div class=\"control-group\"><a href=\"" + $urlDownload + "\" class=\"btn btn-primary\">Download</a><a href=\"" + $urlDelete + "\" class=\"btn btn-danger\">Delete</a></div>";
+        $parent.append($buttonSuccess);
+    }
 
 
-        $idFile = $(this).data("id");
-        $progressbar = $(this).find(".progress").children();
-        $url = $(this).data("url-state");
+    /**
+     * Display button retry button transcode file and delete button
+     * 
+     * @param $parent
+     * @param $urlRetry
+     * @param $urlDelete
+     */
+    function retryButton($parent, $urlRetry, $urlDelete) {
+        var $buttonRetry = "<div class=\"control-group\"><a href=\"" + $urlRetry + "\" class=\"btn btn-info\">Retry</a><a href=\"" + $urlDelete + "\" class=\"btn btn-danger\">Delete</a></div>";
+        $parent.append($buttonRetry);
+    }
 
-        $progressbar.addClass("progress-bar-striped active");
+    $convertedFiles.each(function(){
 
+        var $parent = $(this),
+            $state = $parent.data("currente-state"),
+            $statePercentage = $parent.data("currente-state-percentage"),
+            $urlDownload = $parent.data("url-download"),
+            $urlDelete = $parent.data("url-delete"),
+            $urlRetry = $parent.data("url-retry"),
+            $buttons = $parent.find("div#buttons");
 
+        if (typeof $state != 'undefined' && $state == "Transcoded" && typeof $statePercentage != 'undefined' && $statePercentage == "100") {
+            successButton($buttons, $urlDownload, $urlDelete);
+            return;
+        }
 
-        var idInterval = setInterval(function(){getState(idInterval, $url ,$idFile,$progressbar);}, 1000);
+        var $progressbar = $parent.find(".progress").children(),
+            $url = $parent.data("url-state");
 
-
-
-
-
+        var idInterval = setInterval(function(){getState(idInterval, $url, $progressbar, $urlDownload, $urlRetry, $urlDelete, $buttons);}, 1000);
     });
-
-
-
-
-
 });

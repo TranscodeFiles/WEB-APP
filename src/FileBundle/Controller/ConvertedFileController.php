@@ -82,4 +82,31 @@ class ConvertedFileController extends Controller
         $this->get('file.files')->transcodeFile($convertedFile->file->getName(), $convertedFile->getId(), $ext);
         return $this->redirectToRoute('files_show', array('id' => $convertedFile->getFile()->getId()));
     }
+
+    /**
+     * Delete converted file
+     *
+     * @param ConvertedFile $convertedFile
+     * 
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteAction(ConvertedFile $convertedFile)
+    {
+        //========== Get parent file for redirection ==========\\
+        $parenteId = $convertedFile->getFile()->getId();
+
+        //========== Delete object ceph ==========\\
+        $fileService = $this->get('file.files');
+        $fileService->deleteAction($convertedFile->getName());
+
+        //========== Delete files in database ==========\\
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($convertedFile);
+        $em->flush();
+
+        return $this->redirectToRoute('files_show', array(
+            "id" => $parenteId
+        ));
+    }
+
 }

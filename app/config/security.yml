@@ -41,6 +41,7 @@ security:
         - { path: ^/files, role: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/converted/files/[^/]+/download, role: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/converted/files/[^/]+/state, role: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/converted/files/[^/]+/delete, role: IS_AUTHENTICATED_REMEMBERED }
 
     acl:
         connection: default
