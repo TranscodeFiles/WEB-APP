@@ -160,6 +160,15 @@ class FileController extends Controller
      */
     public function transcodeAction(Request $request, File $file)
     {
+        /**
+         * var User $user
+         */
+        $user = $this->getUser();
+        if($user->gettranscodeTime() < $file->getDuration()){
+            $this->addFlash("warning", "Vous n'avez pas assez de temps de transcode");
+            return $this->redirectToRoute("app_paypal_paiement");
+        }
+
         $convertedFile = new ConvertedFile();
         $form = $this->createForm('FileBundle\Form\ConvertedFileType', $convertedFile);
         $form->handleRequest($request);
