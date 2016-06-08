@@ -38,6 +38,11 @@ converted_file_getstate:
     defaults: { _controller: "FileBundle:ConvertedFile:getState" }
     methods:  [GET]
 
+converted_file_delete:
+    path:     /converted/files/{id}/delete
+    defaults: { _controller: "FileBundle:ConvertedFile:delete" }
+    methods:  [GET]
+
 converted_file_download:
     path:     /converted/files/{id}/download
     defaults: { _controller: "FileBundle:ConvertedFile:download" }

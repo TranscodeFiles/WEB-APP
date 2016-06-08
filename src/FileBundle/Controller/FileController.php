@@ -174,6 +174,7 @@ class FileController extends Controller
             //========== Set attributes to converted file ==========\\
             $convertedFile->setName($convertedFileName);
             $convertedFile->setStatus("In progress");
+            $convertedFile->setStatusPercentage(10);
             $convertedFile->setFile($file);
 
             //========== Save file in database ==========\\
