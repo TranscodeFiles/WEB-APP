@@ -16,10 +16,23 @@ class PaypalController extends Controller
     }
 
 
-    public function paymentAction(Request $request)
+    public function paymentAction(Request $request, $offers)
     {
-        
-        $amount = 10.00;  // get an amount, e.g. from your cart
+        $amount = 0.00;
+          switch ($offers){
+              case 1:
+                  $amount = 1.00;
+                  break;
+              case 2:
+                  $amount = 20.00;
+                  break;
+              case 3:
+                  $amount = 50.00;
+                  break;
+              default:
+                  $amount = 0.00;
+          }
+
 
         $transaction = new Transaction($amount);
 
@@ -40,8 +53,6 @@ class PaypalController extends Controller
      */
     public function canceledPaymentAction(Request $request)
     {
-
-
         $token = $request->query->get('token');
 
         /**
@@ -78,14 +89,41 @@ class PaypalController extends Controller
         }
         $this->get('beelab_paypal.service')->setTransaction($transaction)->complete();
 
-        $duration = 3600 * $transaction->getAmount();
-        dump($duration);
-        $user->addTranscodetime($duration);
 
         $this->getDoctrine()->getManager()->flush();
+
         if (!$transaction->isOk()) {
+            dump($transaction);
+            die();
             return $this->render('AppBundle:Paypal:canceled.html.twig');
         }
+
+        //on récupère le montant payer et on ajoute en conséquence
+        switch ($transaction->getAmount()){
+            case 1.00:
+                $duration = 1;
+                break;
+            case 20.00:
+                $duration = 24;
+                break;
+            case 50.00:
+                $duration = 168;
+                break;
+            default:
+                $duration = 0;
+                break;
+        }
+        $duration = $duration * 3600;
+        dump($duration);
+
+        $user->addTranscodetime($duration);
+        $this->getDoctrine()->getManager()->flush();
+
+
+
+
+
+
 
       return  $this->render('AppBundle:Paypal:completed.html.twig');
     }

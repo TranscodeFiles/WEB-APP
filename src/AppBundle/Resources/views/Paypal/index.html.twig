@@ -5,9 +5,73 @@
 {% endblock %}
 
 {% block body %}
-   <div class="container">
-       <a href="{{ path('app_paypal_purchase') }}" class="btn btn-primary">Abonnement à 1 euros</a>
+    <div class="jumbotron vertical-center">
 
-   </div>
+    {% for type, messages in app.session.flashBag.all %}
+        {% for message in messages %}
+            <div class="alert alert-{{ type }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+       <div class="container">
+
+           <div class="page-header">
+               Temps restant de transcode : {{ app.user.transcodetime|date("G:i:s") }}
+           </div>
+               <div class="row">
+                   <div class="offer col-md-4">
+                       <div class="content text-center" >
+                           <div class="content__title">
+                               Offre 1 euros
+                           </div>
+                           <img class="content__image" src="{{ asset("img/Logo_Transcode_blanc.png") }}" alt="">
+                           <div class="content__description">
+                               Payer 1 euros et profiter d'une heure de transcoding de fichiers sur notre plateforme !
+
+                           </div>
+                           <a href="{{ path("app_paypal_purchase",  { 'offers': 1} ) }}" class="btn btn-primary btn-paiement " >En profiter ! </a>
+
+                       </div>
+                   </div>
+                   <div class="offer col-md-4">
+                       <div class="content text-center" >
+                           <div class="content__title">
+                               Offre journée
+                           </div>
+                           <img class="content__image" src="{{ asset("img/Logo_Transcode_blanc.png") }}" alt="">
+                           <div class="content__description">
+                              Payer 20 euros et bénéficier d'une journée de transcoding de vidéo !
+
+                           </div>
+                           <a href="{{ path("app_paypal_purchase",  { 'offers': 2} ) }}" class="btn btn-primary btn-paiement" >En profiter ! </a>
+
+                       </div>
+
+                   </div>
+                   <div class="offer col-md-4">
+                       <div class="content text-center">
+                           <div class="content text-center" >
+                               <div class="content__title">
+                                   Offre mois
+                               </div>
+                               <img class="content__image" src="{{ asset("img/Logo_Transcode_blanc.png") }}" alt="">
+                               <div class="content__description">
+                                  Payer 50 euros et bénéficier d'une semaine de transcoding de vidéo !
+
+                               </div>
+                               <a href="{{ path("app_paypal_purchase",  { 'offers': 3} ) }}" class="btn btn-primary btn-paiement" >En profiter ! </a>
+
+                           </div>
+                   </div>
+               </div>
+
+
+
+
+
+       </div>
+    </div>
 
 {% endblock %}

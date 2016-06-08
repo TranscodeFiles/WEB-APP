@@ -6,7 +6,12 @@
 
 {% block body %}
     <div class="container">
-       Votre paiement à bien été effectué !
+        <div class="jumbotron">
+            <p>Votre paiement à bien été effectué !</p>
+            <p>Votre solde s'élève maintenant à : {{ app.user.transcodetime|date("G:i:s") }}</p>
+        </div>
+        <a href="{{ path("files_index") }}" class="btn btn-primary">Retour</a>
+
 
     </div>
 

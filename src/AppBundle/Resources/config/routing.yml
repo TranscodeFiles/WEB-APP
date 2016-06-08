@@ -7,7 +7,7 @@ app_paypal_paiement:
     defaults: { _controller: AppBundle:Paypal:index }
 
 app_paypal_purchase:
-    path: /paiement/purchase
+    path: /paiement/purchase/{offers}
     defaults: { _controller: AppBundle:Paypal:payment }
 
 app_paypal_canceled:
