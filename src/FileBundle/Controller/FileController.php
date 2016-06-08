@@ -48,14 +48,12 @@ class FileController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             //========== Verify if exists ==========\\
-            $exists = true;
-            try {
-                $object = $this->get('file.files')->downloadAction($file->getAttachment()->getClientOriginalName());
-            } catch (ErrorException $exception) {
-                $exists = false;
-            }
-            if ($exists) {
-                return new Response('file already exists', 423);
+            $fileName = $file->getAttachment()->getClientOriginalName();
+            $containers = $this->get('file.files')->listAction();
+            foreach ($containers as $container) {
+                if (pathinfo($container)['basename'] == pathinfo($fileName)['basename']) {
+                    return new Response('file already exists', 423);
+                }
             }
             
             //========== Get user ==========\\
@@ -175,6 +173,9 @@ class FileController extends Controller
     public function transcodeAction(Request $request, File $file)
     {
         $convertedFile = new ConvertedFile();
+
+        //var_dump($file->getConvertedFiles());
+        //die();
 
         //========== Get extension ==========\\
         $name = $file->getName();
