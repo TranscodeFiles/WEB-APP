@@ -8,12 +8,14 @@ services:
         class: "%file.custome.files.class%"
         arguments: ["@ceph.manager", "@security.token_storage", "@buzz" , "@router", "@fos_user.user_manager", "@doctrine.orm.default_entity_manager", "@mailer", "@twig", "%api_core.host%"]
 
-#    @ToDo Convert this controller to service controller
-#    file.controller.file:
-#        class: "%file.controller.file.class%"
-#        arguments: ["@file.files"]
     file.twig_extension:
-            class: FileBundle\Twig\Extension\ByteFilter
-            public: false
-            tags:
-                - { name: twig.extension }
+        class: FileBundle\Twig\Extension\ByteFilter
+        public: false
+        tags:
+            - { name: twig.extension }
+
+    secondtodate.twig_extension:
+        class: FileBundle\Twig\Extension\SecondToDateFilter
+        public: false
+        tags:
+            - { name: twig.extension }
