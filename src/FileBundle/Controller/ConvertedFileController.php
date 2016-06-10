@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class ConvertedFileController
@@ -43,7 +44,14 @@ class ConvertedFileController extends Controller
      *
      * @return JsonResponse
      */
-    public function getStateAction(ConvertedFile $convertedFile){
+    public function getStateAction(ConvertedFile $convertedFile)
+    {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('EDIT', $convertedFile)) {
+            throw new AccessDeniedException();
+        }
 
         $percentage = $convertedFile->getStatusPercentage();
         $status = $convertedFile->getStatus();
@@ -65,6 +73,13 @@ class ConvertedFileController extends Controller
      */
     public function downloadAction(ConvertedFile $convertedFile)
     {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('EDIT', $convertedFile)) {
+            throw new AccessDeniedException();
+        }
+
         return $this->get('file.files')->downloadAction($convertedFile->getName());
     }
 
@@ -77,6 +92,13 @@ class ConvertedFileController extends Controller
      */
     public function retryTranscodeAction(ConvertedFile $convertedFile)
     {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('EDIT', $convertedFile)) {
+            throw new AccessDeniedException();
+        }
+
         $fileName = strtolower($convertedFile->getName());
         $ext = pathinfo($fileName, PATHINFO_EXTENSION);
         $this->get('file.files')->transcodeFile($convertedFile->file->getName(), $convertedFile->getId(), $ext);
@@ -92,6 +114,13 @@ class ConvertedFileController extends Controller
      */
     public function deleteAction(ConvertedFile $convertedFile)
     {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('DELETE', $convertedFile)) {
+            throw new AccessDeniedException();
+        }
+
         //========== Get parent file for redirection ==========\\
         $parenteId = $convertedFile->getFile()->getId();
 
