@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Transaction;
 use Beelab\PaypalBundle\Paypal\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -18,7 +17,6 @@ class PaypalController extends Controller
 
     public function paymentAction(Request $request, $offers)
     {
-        $amount = 0.00;
           switch ($offers){
               case 1:
                   $amount = 1.00;
@@ -97,9 +95,6 @@ class PaypalController extends Controller
         }
         $this->get('beelab_paypal.service')->setTransaction($transaction)->complete();
         $this->getDoctrine()->getManager()->flush();
-        if (!$transaction->isOk()) {
-            return $this->render('AppBundle:Paypal:canceled.html.twig');
-        }
 
         //on récupère le montant payer et on ajoute en conséquence
         switch ($transaction->getAmount()){

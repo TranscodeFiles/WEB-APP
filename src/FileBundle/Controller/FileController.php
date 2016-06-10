@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use FileBundle\Entity\File;
 use FileBundle\Form\FileType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class FileController
@@ -94,11 +95,17 @@ class FileController extends Controller
      * Finds and displays a File entity.
      *
      * @param File $file
-     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(File $file)
     {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('EDIT', $file)) {
+            throw new AccessDeniedException();
+        }
+
         $deleteForm = $this->createDeleteForm($file);
 
         return $this->render('file/show.html.twig', array(
@@ -117,6 +124,13 @@ class FileController extends Controller
      */
     public function deleteAction(Request $request, File $file)
     {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('DELETE', $file)) {
+            throw new AccessDeniedException();
+        }
+
         $form = $this->createDeleteForm($file);
         $form->handleRequest($request);
 
@@ -147,6 +161,13 @@ class FileController extends Controller
      */
     public function downloadAction(File $file)
     {
+        $authorizationChecker = $this->get('security.authorization_checker');
+
+        // check for edit access
+        if (false === $authorizationChecker->isGranted('EDIT', $file)) {
+            throw new AccessDeniedException();
+        }
+
         return $this->get('file.files')->downloadAction($file->getName());
     }
 
