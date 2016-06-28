@@ -12,4 +12,34 @@ use Doctrine\ORM\EntityRepository;
  */
 class FileRepository extends EntityRepository
 {
+    /**
+     * Get total size by user id
+     * 
+     * @param  integer $userId
+     * 
+     * @return mixed
+     */
+    public function getTotalSize($userId)
+    {
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('SUM(cf.contentLength)')
+            ->from('FileBundle:File', 'f')
+            ->leftJoin('f.convertedFiles', 'cf')
+            ->where($qb->expr()->eq("f.user", $userId))
+            ->orderBy('f.name');
+
+
+        $sumConvertedFiles = $qb->getQuery()->getSingleScalarResult();
+
+        $qb = $this->getEntityManager()->createQueryBuilder();
+
+        $qb->select('SUM(f.contentLength)')
+            ->from('FileBundle:File', 'f')
+            ->where($qb->expr()->eq("f.user", $userId));
+
+        $sumFiles = $qb->getQuery()->getSingleScalarResult();
+
+        return $sumFiles + $sumConvertedFiles;
+    }
 }
