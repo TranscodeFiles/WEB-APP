@@ -28,6 +28,7 @@ class FileController extends Controller
 
         return $this->render('file/index.html.twig', array(
             'files' => $user->getFiles(),
+            'totalSize' => $this->get('file.files')->getTotalSize()
         ));
     }
 

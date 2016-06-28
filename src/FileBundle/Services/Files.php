@@ -2,10 +2,12 @@
 
 namespace FileBundle\Services;
 
+use AppBundle\Entity\User;
 use Buzz\Browser;
 use Common\CephBundle\Services\Container;
 use Common\CephBundle\Services\Manager;
 use Doctrine\ORM\EntityManager;
+use FileBundle\Entity\File;
 use FileBundle\Factory\InterfaceFiles;
 use FOS\UserBundle\Model\UserManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -72,15 +74,15 @@ class Files implements InterfaceFiles
     /**
      * Files constructor.
      *
-     * @param Manager $managerService
-     * @param TokenStorage $tokenStorage
-     * @param Browser $buzz
-     * @param Router $router
-     * @param UserManagerInterface $userManager
-     * @param EntityManager $entityManager
-     * @param \Swift_Mailer $mailer
-     * @param \Twig_Environment $template
-     * @param string $apiCoreHost
+     * @param Manager               $managerService
+     * @param TokenStorage          $tokenStorage
+     * @param Browser               $buzz
+     * @param Router                $router
+     * @param UserManagerInterface  $userManager
+     * @param EntityManager         $entityManager
+     * @param \Swift_Mailer         $mailer
+     * @param \Twig_Environment     $template
+     * @param string                $apiCoreHost
      *
      * @throws \ErrorException
      */
@@ -155,6 +157,9 @@ class Files implements InterfaceFiles
             throw new AccessDeniedHttpException();
         }
 
+        /**
+         * @var User $user
+         */
         $user = $this->fosUserManager->findUserBy(array('id' => $userId));
 
         if (empty($user) || !$user->isEnabled()) {
@@ -171,6 +176,12 @@ class Files implements InterfaceFiles
             $convertedFile->setContentLength($metaData['Content-Length']);
             $convertedFile->setContentType($metaData['Content-Type']);
 
+            /**
+             * @var File $file
+             */
+            $file = $convertedFile->getFile();
+            $user->removeTranscodetime($file->duration);
+            $this->em->persist($user);
 
             $messageMail = \Swift_Message::newInstance()
                 ->setSubject('Transcoding.com: Your file is ready!')
@@ -193,5 +204,15 @@ class Files implements InterfaceFiles
         $this->em->flush();
 
         return new Response("Object is update !");
+    }
+
+    /**
+     * Get total size of files
+     * 
+     * @return mixed
+     */
+    public function getTotalSize()
+    {
+        return $this->em->getRepository('FileBundle:File')->getTotalSize($this->tokenStorage->getToken()->getUser()->getId());
     }
 }
